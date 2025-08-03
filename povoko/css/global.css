@@ -1,0 +1,42 @@
+* { margin: 0; padding: 0; list-style: none; text-decoration: none; box-sizing: border-box; color: inherit; }
+
+@font-face {
+    font-family: "Roboto Condensed";
+    src: url(../fonts/Roboto_Condensed/static/RobotoCondensed-Regular.ttf);
+}
+
+.container {
+    width: 100vw;
+    height: 100vh;
+
+    background-image: url(../img/source/background.png);
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+header {
+    position: fixed;
+    top: 0;
+
+    width: 100%;
+
+    padding: 25px 100px;
+}
+
+.main__logo {
+    font-family: "Roboto Condensed";
+    text-transform: uppercase;
+    font-size: 32px;
+}
+
+section {
+    width: 100%;
+
+    &.intro {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+        height: 100vh;
+    }
+}
