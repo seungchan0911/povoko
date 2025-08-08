@@ -128,32 +128,52 @@ section {
             background-attachment: fixed;
             z-index: -100;
         }
+        
+        & .text-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+            
+            font-family: "Roboto Condensed Regular";
+            color: #fff;
+            
+            & .text-01 {
+                font-size: 20px;
+                text-align: center;
+            }
+            
+            & .text-group {
+                display: flex;
+                gap: 25px;
+            }
+        }
     }
 
+    &.section-03 {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+
+        & img {
+            height: 500px;
+        }
+
+        & .text-content {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+
+            font-family: "Roboto Condensed Regular";
+            text-align: center;
+        }
+    }
+    
     & .logo {
         font-family: "Roboto Condensed Regular";
         text-transform: uppercase;
         font-size: 32px;
         text-align: center;
-    }
-    
-    & .text-content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 25px;
-
-        font-family: "Roboto Condensed Regular";
-        color: #fff;
-
-        & .text-01 {
-            font-size: 20px;
-        }
-
-        & .text-group {
-            display: flex;
-            gap: 25px;
-        }
     }
 }
 
@@ -169,5 +189,10 @@ section {
         & .text-group {
             flex-direction: column;
         }
+    }
+
+    section img {
+        width: calc(100% - 50px);
+        height: auto !important;
     }
 }

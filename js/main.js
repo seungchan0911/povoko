@@ -14,7 +14,7 @@ function controlDOMColor() {
 
     scroll.on("scroll", (args) => {
         if (isChecked.checked) return
-        if (args.scroll.y >= sectionHeight) header.classList.add("activate")
+        else if (args.scroll.y >= sectionHeight - 25 && args.scroll.y < sectionHeight * 2 - 25) header.classList.add("activate")
         else header.classList.remove("activate")
     })
 
@@ -25,13 +25,13 @@ function controlDOMColor() {
         } else {
             remoteDisplay.classList.remove("activate")
             header.classList.remove("activate")
-            if (scroll.scroll.instance.scroll.y >= sectionHeight) header.classList.add("activate")
+            if (scroll.scroll.instance.scroll.y >= sectionHeight - 25 && scroll.scroll.instance.scroll.y < sectionHeight * 2 - 25) header.classList.add("activate")
             else header.classList.remove("activate")
         }
     })
     
     window.addEventListener("scroll", () => {
-        if (scrollY >= sectionHeight) header.classList.add("activate")
+        if (scrollY >= sectionHeight - 25 && scrollY < sectionHeight * 2 - 25) header.classList.add("activate")
         else header.classList.remove("activate")
     })
 }
