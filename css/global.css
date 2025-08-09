@@ -41,7 +41,7 @@ header {
     transition: .25s color;
     
     &.activate {
-        color: #fff;
+        color: #000;
     }
     
     & .remote {
@@ -71,8 +71,9 @@ header {
     width: 100vw;
     height: 100vh;
 
-    background: #000;
-    color: #fff;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(5px);
+    color: #000;
     font-size: 24px;
     text-transform: capitalize;
     font-family: "Roboto Condensed Light";
