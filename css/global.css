@@ -90,7 +90,7 @@ header {
         display: flex;
         gap: 200px;
 
-        & li.current {
+        & li.current, & li:hover {
             border-bottom: 1px solid;
         }
     }
