@@ -97,10 +97,6 @@ header {
 }
 
 section {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
     width: 100%;
     height: 100vh;
 
@@ -113,6 +109,10 @@ section {
     &.section-02 {
         position: relative;
         overflow: hidden;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
         & .bg-parallax {
             position: absolute;
@@ -150,7 +150,7 @@ section {
         }
     }
 
-    &.film-section {
+    /* &.film-section {
         display: flex;
         flex-direction: column;
         gap: 25px;
@@ -167,8 +167,90 @@ section {
             font-family: "Roboto Condensed Regular";
             text-align: center;
         }
+    } */
+
+    &.film-section {
+        display: flex;
+        justify-content: space-between;
+        gap: 25px;
+
+        min-height: 100vh;
+        height: auto;
+        overflow: visible;
+
+        padding: 25px;
+        padding-top: 84px;
+
+        & .fixed-film {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 25px;
+
+            width: 100%;
+            height: 100%;
+
+            transition: .25s opacity;
+
+            & img {
+                width: 100%;
+                height: auto;
+
+
+                &.short-horizontal {
+                    width: auto;
+                    height: 500px;
+                }
+            }
+
+            & .text-group {
+                display: flex;
+                flex-direction: column;
+                gap: 12.5px;
+                
+                font-family: "Roboto Condensed Regular";
+                text-align: center;
+
+                & .read-more {
+                    font-size: 14px;
+                    color: rgba(0, 0, 0, 0.5);
+                    text-decoration: underline;
+                    cursor: pointer;
+                }
+            }
+        }
+
+        & .film-scroll {
+            width: 100%;
+            height: auto;
+            overflow: visible;
+
+            & .film-grid {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 25px;
+                
+                width: 100%;
+                height: fit-content;
+                
+                & .film {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    & img {
+                        width: 100%;
+                        /* height: 100%; */
+
+                        object-fit: cover;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
     }
-    
+
     & .logo {
         font-family: "Roboto Condensed Regular";
         text-transform: uppercase;
@@ -190,9 +272,27 @@ section {
             flex-direction: column;
         }
     }
-
-    section img {
+/* 
+    .film-section img {
         width: calc(100% - 50px);
         height: auto !important;
+    } */
+
+    .film-section {
+        display: flex;
+        flex-direction: column;
+
+        & .fixed-film {
+            & img {
+                &.short-horizontal {
+                    width: 100% !important;
+                    height: auto !important;
+                }
+            }
+        }
+
+        & .film-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
     }
 }

@@ -1,16 +1,16 @@
 import LocomotiveScroll from 'https://esm.sh/locomotive-scroll'
 
-function controlDOMColor() {
+const scroll = new LocomotiveScroll({
+  el: document.querySelector('[data-scroll-container]'),
+  smooth: true,
+  lerp: 0.08,
+})
+
+function controlDOM() {
     const header = document.querySelector("header")
     const isChecked = header.querySelector("#remote")
     const remoteDisplay = document.querySelector(".remote-display")
     const sectionHeight = document.querySelector("section").offsetHeight
-
-    const scroll = new LocomotiveScroll({
-      el: document.querySelector('[data-scroll-container]'),
-      smooth: true,
-      lerp: 0.08,
-    })
 
     scroll.on("scroll", (args) => {
         if (isChecked.checked) return
@@ -36,4 +36,28 @@ function controlDOMColor() {
     })
 }
 
-controlDOMColor()
+function changeFilmData() {
+    const fixedFilm = document.querySelector(".fixed-film img")
+    const filmList = document.querySelectorAll(".film-grid .film")
+
+    filmList.forEach(film => {
+      film.addEventListener("click", (e) => {
+        fixedFilm.parentNode.style.opacity = 0
+        
+        setTimeout(() => {
+            fixedFilm.src = film.querySelector("img").src
+
+            if (fixedFilm.offsetHeight > fixedFilm.offsetWidth) {
+                fixedFilm.classList.add("short-horizontal")
+            } else {
+                fixedFilm.classList.remove("short-horizontal")
+            }
+
+            fixedFilm.parentNode.style.opacity = 1
+        }, 250);
+      })
+    })
+}
+
+controlDOM()
+if (document.body.dataset.page === "works") changeFilmData()
