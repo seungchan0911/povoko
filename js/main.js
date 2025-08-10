@@ -1,12 +1,16 @@
 import LocomotiveScroll from 'https://esm.sh/locomotive-scroll'
 
-const scroll = new LocomotiveScroll({
-  el: document.querySelector('[data-scroll-container]'),
-  smooth: true,
-  lerp: 0.08,
+window.addEventListener("load", () => {
+    const scroll = new LocomotiveScroll({
+        el: document.querySelector('[data-scroll-container]'),
+        smooth: true,
+        lerp: 0.08,
+    })
+    controlDOM(scroll)
+    if (document.body.dataset.page === "works") changeFilmData()
 })
 
-function controlDOM() {
+function controlDOM(scroll) {
     const header = document.querySelector("header")
     const isChecked = header.querySelector("#remote")
     const remoteDisplay = document.querySelector(".remote-display")
@@ -60,10 +64,7 @@ function changeFilmData() {
             }
 
             fixedFilm.parentNode.style.opacity = 1
-        }, 250);
+        }, 250)
       })
     })
 }
-
-controlDOM()
-if (document.body.dataset.page === "works") changeFilmData()
