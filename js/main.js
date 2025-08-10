@@ -13,18 +13,17 @@ function controlDOM() {
     const sectionHeight = document.querySelector("section").offsetHeight
 
     scroll.on("scroll", (args) => {
-        if (isChecked.checked) return
-        else if (args.scroll.y >= sectionHeight - 25 && args.scroll.y < sectionHeight * 2 - 50) header.classList.add("activate")
+        if (args.scroll.y >= sectionHeight - 25 && args.scroll.y < sectionHeight * 2 - 50) header.classList.add("activate")
         else header.classList.remove("activate")
     })
 
     isChecked.addEventListener("change", () => {
         if (isChecked.checked) {
             remoteDisplay.classList.add("activate")
-            header.classList.add("activate")
+            header.classList.remove("activate")
         } else {
             remoteDisplay.classList.remove("activate")
-            header.classList.remove("activate")
+            header.classList.add("activate")
             if (scroll.scroll.instance.scroll.y >= sectionHeight - 25 && scroll.scroll.instance.scroll.y < sectionHeight * 2 - 50) header.classList.add("activate")
             else header.classList.remove("activate")
         }
@@ -39,9 +38,16 @@ function controlDOM() {
 function changeFilmData() {
     const fixedFilm = document.querySelector(".fixed-film img")
     const filmList = document.querySelectorAll(".film-grid .film")
+    let selected = null
 
     filmList.forEach(film => {
-      film.addEventListener("click", (e) => {
+      film.querySelector("img").addEventListener("click", (e) => {
+        if (fixedFilm.src === film.querySelector("img").src) return
+
+        console.log(selected)
+        if (selected) selected.classList.remove("selected")
+        selected = e.target
+        selected.classList.add("selected")
         fixedFilm.parentNode.style.opacity = 0
         
         setTimeout(() => {
