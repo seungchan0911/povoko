@@ -46,9 +46,10 @@ function changeFilmData() {
 
     filmList.forEach(film => {
       film.querySelector("img").addEventListener("click", (e) => {
+        (scroll?.scrollTo || ((y) => window.scrollTo({ top: y, behavior: 'auto' })))(0);
+
         if (fixedFilm.src === film.querySelector("img").src) return
 
-        console.log(selected)
         if (selected) selected.classList.remove("selected")
         selected = e.target
         selected.classList.add("selected")
@@ -57,11 +58,8 @@ function changeFilmData() {
         setTimeout(() => {
             fixedFilm.src = film.querySelector("img").src
 
-            if (fixedFilm.offsetHeight > fixedFilm.offsetWidth) {
-                fixedFilm.classList.add("short-horizontal")
-            } else {
-                fixedFilm.classList.remove("short-horizontal")
-            }
+            if (fixedFilm.offsetHeight > fixedFilm.offsetWidth) fixedFilm.classList.add("short-horizontal")
+            else fixedFilm.classList.remove("short-horizontal")
 
             fixedFilm.parentNode.style.opacity = 1
         }, 250)
