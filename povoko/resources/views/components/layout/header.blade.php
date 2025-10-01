@@ -12,7 +12,7 @@
             <a href="{{ route('works') }}">works</a>
         </li>
         <li>
-            <a href="{{ route('index') }}">contact</a>
+            <a href="{{ route('contact') }}">contact</a>
         </li>
     </ul>
 </div>

@@ -246,6 +246,48 @@ section {
         font-size: 32px;
         text-align: center;
     }
+
+    &.contact {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 125px;
+
+        padding: 25px;
+
+        & .inputs {
+            display: flex;
+            flex-direction: column;
+            align-items: end;
+            gap: 25px;
+            
+            & input, & textarea {
+                font-family: inherit;
+                width: 500px;
+                background: transparent;
+                border: none;
+                border-bottom: 1px solid;
+                font-size: 16px;
+                padding: 12.5px 0;
+                outline: none;
+            }
+            
+            & textarea {
+                font-family: inherit;
+                width: 500px;
+                font-size: 16px;
+                min-height: 50px;
+                resize: vertical;
+            }
+
+            & button {
+                all: unset;
+                font-size: 16px;
+                cursor: pointer;
+            }
+        }
+    }
 }
 
 
