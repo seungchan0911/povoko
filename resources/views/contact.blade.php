@@ -14,7 +14,7 @@
         <main data-scroll-container>
             <section class="contact">
               <div class="logo">povoko studio</div>
-              <form action="{{ route('contact') }}" method="POST">
+              <form action="{{ route('contact') }}" method="POST" data-autosave="contact-form">
                 @csrf
                 <div class="inputs">
                   <div class="input-group">
@@ -46,7 +46,12 @@
     </div>
 </body> 
 <script type="module" src="./js/main.js"></script>
+<script src="./js/form-autosave.js"></script>
 @if (session('success'))
-<script>alert(@json(session('success')))</script>
+<script>
+    alert(@json(session('success')));
+    // 성공 시 로컬스토리지 클리어
+    localStorage.removeItem('form_contact-form');
+</script>
 @endif
 </html>

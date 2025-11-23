@@ -38,7 +38,7 @@
                     </div>
                 @endif
                 
-                <form action="{{ route('admin.works') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('admin.works') }}" method="POST" enctype="multipart/form-data" data-autosave="admin-works">
                     @csrf
                     <div class="inputs">
                         <div class="input-group">
@@ -66,4 +66,5 @@
     </div>
 </body> 
 <script type="module" src="{{ asset('js/main.js') }}"></script>
+<script src="{{ asset('js/form-autosave.js') }}"></script>
 </html>
