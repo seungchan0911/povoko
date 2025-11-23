@@ -8,13 +8,31 @@ use App\Models\Text;
 class TextController extends Controller
 {
     public function view(Request $request) {
-        $text = Text::latest()->first();;
+        $text = Text::latest()->first();
+        
+        // text가 없으면 기본값 생성
+        if (!$text) {
+            $text = Text::create([
+                'text1' => 'Welcome to Povoko Studio',
+                'text2' => 'We create amazing content',
+                'background_video' => null,
+            ]);
+        }
         
         return view('index', compact('text'));
     }
 
     public function operationView(Request $request) {
-        $text = Text::latest()->first();;
+        $text = Text::latest()->first();
+        
+        // text가 없으면 기본값 생성
+        if (!$text) {
+            $text = Text::create([
+                'text1' => 'Welcome to Povoko Studio',
+                'text2' => 'We create amazing content',
+                'background_video' => null,
+            ]);
+        }
         
         return view('admin.operation', compact('text'));
     }
