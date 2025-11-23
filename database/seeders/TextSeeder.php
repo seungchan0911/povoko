@@ -12,7 +12,10 @@ class TextSeeder extends Seeder
         Text::create([
             'text1' => 'Welcome to Povoko Studio',
             'text2' => 'We create amazing content',
-            'background_video' => null,
+            'background_video_1' => null,
+            'background_video_2' => null,
+            'background_video_3' => null,
+            'background_video_4' => null,
         ]);
     }
 }

@@ -15,7 +15,10 @@ class TextController extends Controller
             $text = Text::create([
                 'text1' => 'Welcome to Povoko Studio',
                 'text2' => 'We create amazing content',
-                'background_video' => null,
+                'background_video_1' => null,
+                'background_video_2' => null,
+                'background_video_3' => null,
+                'background_video_4' => null,
             ]);
         }
         
@@ -30,7 +33,10 @@ class TextController extends Controller
             $text = Text::create([
                 'text1' => 'Welcome to Povoko Studio',
                 'text2' => 'We create amazing content',
-                'background_video' => null,
+                'background_video_1' => null,
+                'background_video_2' => null,
+                'background_video_3' => null,
+                'background_video_4' => null,
             ]);
         }
         
@@ -44,31 +50,43 @@ class TextController extends Controller
         $request->validate([
             'text1' => 'required',
             'text2' => 'required',
-            'background_video' => 'nullable|file|mimes:mp4,mov,avi,wmv,webm|max:204800', // 200MB
+            'background_video_1' => 'nullable|file|mimes:mp4,mov,avi,wmv,webm|max:204800',
+            'background_video_2' => 'nullable|file|mimes:mp4,mov,avi,wmv,webm|max:204800',
+            'background_video_3' => 'nullable|file|mimes:mp4,mov,avi,wmv,webm|max:204800',
+            'background_video_4' => 'nullable|file|mimes:mp4,mov,avi,wmv,webm|max:204800',
         ]);
         
-        $backgroundVideoPath = $text->background_video; // 기존 값 유지
+        $data = [
+            'text1' => $request->text1,
+            'text2' => $request->text2,
+        ];
         
-        // 파일이 업로드되었으면 처리
-        if ($request->hasFile('background_video')) {
-            $file = $request->file('background_video');
+        // 4개의 비디오 처리
+        for ($i = 1; $i <= 4; $i++) {
+            $fieldName = "background_video_{$i}";
             
-            if ($file->isValid()) {
-                // 기존 파일 삭제 (있다면)
-                if ($text->background_video && \Storage::disk('public')->exists($text->background_video)) {
-                    \Storage::disk('public')->delete($text->background_video);
-                }
+            if ($request->hasFile($fieldName)) {
+                $file = $request->file($fieldName);
                 
-                // 새 파일 저장
-                $backgroundVideoPath = $file->store('videos', 'public');
+                if ($file->isValid()) {
+                    // 기존 파일 삭제
+                    if ($text->$fieldName && \Storage::disk('public')->exists($text->$fieldName)) {
+                        \Storage::disk('public')->delete($text->$fieldName);
+                    }
+                    
+                    // 새 파일 저장
+                    $data[$fieldName] = $file->store('videos', 'public');
+                } else {
+                    // 파일이 유효하지 않으면 기존 값 유지
+                    $data[$fieldName] = $text->$fieldName;
+                }
+            } else {
+                // 파일이 업로드되지 않았으면 기존 값 유지
+                $data[$fieldName] = $text->$fieldName;
             }
         }
     
-        $text->update([
-            'text1' => $request->text1,
-            'text2' => $request->text2,
-            'background_video' => $backgroundVideoPath,
-        ]);
+        $text->update($data);
 
         return back()->with('success', 'Updated successfully!');
     }

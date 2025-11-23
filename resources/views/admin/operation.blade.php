@@ -41,10 +41,31 @@
                             <textarea name="text2" id="" cols="50" rows="2" required>{{ $text->text2 }}</textarea>
                         </div>
                         <div class="input-group">
-                            <div class="input-title">background video</div>
-                            <input type="file" name="background_video" accept="video/*">
-                            @if($text->background_video)
-                                <small>Current: {{ basename($text->background_video) }}</small>
+                            <div class="input-title">background video 1</div>
+                            <input type="file" name="background_video_1" accept="video/*">
+                            @if($text->background_video_1)
+                                <small>Current: {{ basename($text->background_video_1) }}</small>
+                            @endif
+                        </div>
+                        <div class="input-group">
+                            <div class="input-title">background video 2</div>
+                            <input type="file" name="background_video_2" accept="video/*">
+                            @if($text->background_video_2)
+                                <small>Current: {{ basename($text->background_video_2) }}</small>
+                            @endif
+                        </div>
+                        <div class="input-group">
+                            <div class="input-title">background video 3</div>
+                            <input type="file" name="background_video_3" accept="video/*">
+                            @if($text->background_video_3)
+                                <small>Current: {{ basename($text->background_video_3) }}</small>
+                            @endif
+                        </div>
+                        <div class="input-group">
+                            <div class="input-title">background video 4</div>
+                            <input type="file" name="background_video_4" accept="video/*">
+                            @if($text->background_video_4)
+                                <small>Current: {{ basename($text->background_video_4) }}</small>
                             @endif
                         </div>
                         <button type="submit">Change</button>

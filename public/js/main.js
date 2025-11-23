@@ -58,6 +58,7 @@ window.addEventListener("load", () => {
     })
     controlDOM(scroll)
     if (document.body.dataset.page === "works") changeFilmData()
+    if (document.body.dataset.page === "home") initBackgroundVideos()
 })
 
 function controlDOM(scroll) {
@@ -155,4 +156,57 @@ function changeFilmData() {
         }, 500) // 페이드아웃 시간과 동일
       })
     })
+}
+
+// 배경 비디오 순환 기능
+function initBackgroundVideos() {
+    const video = document.querySelector('.bg-parallax')
+    if (!video) return
+    
+    const videosData = video.dataset.videos
+    if (!videosData) return
+    
+    let videos
+    try {
+        videos = JSON.parse(videosData)
+    } catch (e) {
+        console.error('Failed to parse videos data:', e)
+        return
+    }
+    
+    if (!videos || videos.length === 0) {
+        console.log('No videos available')
+        return
+    }
+    
+    let currentIndex = 0
+    
+    // 첫 번째 비디오 로드
+    video.src = videos[currentIndex]
+    video.load()
+    
+    // 비디오 종료 시 다음 비디오로 전환
+    video.addEventListener('ended', () => {
+        currentIndex = (currentIndex + 1) % videos.length
+        video.src = videos[currentIndex]
+        video.load()
+        video.play().catch(err => console.error('Play error:', err))
+    })
+    
+    // 비디오 로드 에러 처리
+    video.addEventListener('error', (e) => {
+        console.error('Video load error:', videos[currentIndex], e)
+        // 다음 비디오로 시도
+        currentIndex = (currentIndex + 1) % videos.length
+        if (currentIndex < videos.length && videos[currentIndex]) {
+            video.src = videos[currentIndex]
+            video.load()
+            video.play().catch(err => console.error('Play error:', err))
+        } else {
+            console.error('All videos failed to load')
+        }
+    })
+    
+    // 자동 재생
+    video.play().catch(err => console.error('Initial play error:', err))
 }

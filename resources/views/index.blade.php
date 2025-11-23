@@ -21,7 +21,19 @@
                 <div class="logo" data-scroll data-scroll-speed="3">povoko studio</div>
             </section>
             <section class="section-02" data-scroll>
-                <video class="bg-parallax" src="{{ $text->background_video ? asset('storage/' . $text->background_video) : 'https://www.pexels.com/download/video/27745923/' }}" autoplay loop muted data-scroll data-scroll-speed="-2"></video>
+                @php
+                    $videos = [
+                        $text->background_video_1 ? asset('storage/' . $text->background_video_1) : null,
+                        $text->background_video_2 ? asset('storage/' . $text->background_video_2) : null,
+                        $text->background_video_3 ? asset('storage/' . $text->background_video_3) : null,
+                        $text->background_video_4 ? asset('storage/' . $text->background_video_4) : null,
+                    ];
+                    $videos = array_filter($videos); // null 제거
+                    $videosJson = json_encode(array_values($videos));
+                @endphp
+                
+                <video class="bg-parallax" autoplay muted data-scroll data-scroll-speed="-2" data-videos='{{ $videosJson }}'></video>
+                
                 <div class="text-content" data-scroll data-scroll-speed="3">
                     <div class="text-01">{!! nl2br(e($text->text1)) !!}</div>
                     <ul class="text-group">
