@@ -9,6 +9,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
 </head>
 <body data-page="home">
+    <!-- 로딩 애니메이션 -->
+    <div class="loading-screen">
+        <div class="loading-text">0%</div>
+    </div>
+    
     <div class="container">
         <x-layout.header />
         <main data-scroll-container>
@@ -16,15 +21,12 @@
                 <div class="logo" data-scroll data-scroll-speed="3">povoko studio</div>
             </section>
             <section class="section-02" data-scroll>
-                <div class="bg-parallax" data-scroll data-scroll-speed="-2"></div>
+                <video class="bg-parallax" src="{{ $text->background_video ? asset('storage/' . $text->background_video) : 'https://www.pexels.com/download/video/27745923/' }}" autoplay loop muted data-scroll data-scroll-speed="-2"></video>
                 <div class="text-content" data-scroll data-scroll-speed="3">
-                    <div class="text-01">We make visuals for your brand.<br>----- fr(seoul) (london) (paris) (tokyo) -----</div>
+                    <div class="text-01">{!! nl2br(e($text->text1)) !!}</div>
                     <ul class="text-group">
                         <li class="logo">povoko studio</li>
-                        <li>
-                            is a global creative production based in Seoul<br>
-                            and Europe, providing integrated visual solutions for brands.
-                        </li>
+                        <li>{!! nl2br(e($text->text2)) !!}</li>
                     </ul>
                 </div>
             </section>

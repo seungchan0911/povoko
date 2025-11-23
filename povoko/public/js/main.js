@@ -1,5 +1,55 @@
 import LocomotiveScroll from 'https://esm.sh/locomotive-scroll'
 
+// 로딩 애니메이션 - 모든 페이지에 적용 (admin 제외)
+const currentPage = document.body.dataset.page
+if (currentPage !== 'admin') {
+    const loadingScreen = document.querySelector('.loading-screen')
+    const loadingText = document.querySelector('.loading-text')
+    
+    if (loadingScreen && loadingText) {
+        let progress = 0
+        let targetProgress = 0
+        let isLoaded = false
+        const startTime = performance.now()
+        const minLoadingTime = 800
+        
+        window.addEventListener('load', () => {
+            const elapsedTime = performance.now() - startTime
+            
+            if (elapsedTime >= minLoadingTime) {
+                isLoaded = true
+                targetProgress = 100
+            } else {
+                setTimeout(() => {
+                    isLoaded = true
+                    targetProgress = 100
+                }, minLoadingTime - elapsedTime)
+            }
+        })
+        
+        function updateLoading() {
+            if (!isLoaded && targetProgress < 90) {
+                targetProgress += Math.random() * 3
+            }
+            
+            progress += (targetProgress - progress) * 0.1
+            
+            loadingText.textContent = Math.floor(progress) + '%'
+            
+            if (progress < 99.9) {
+                requestAnimationFrame(updateLoading)
+            } else {
+                loadingText.textContent = '100%'
+                setTimeout(() => {
+                    loadingScreen.classList.add('hidden')
+                }, 300)
+            }
+        }
+        
+        requestAnimationFrame(updateLoading)
+    }
+}
+
 window.addEventListener("load", () => {
     const scroll = new LocomotiveScroll({
         el: document.querySelector('[data-scroll-container]'),
@@ -12,9 +62,13 @@ window.addEventListener("load", () => {
 
 function controlDOM(scroll) {
     const header = document.querySelector("header")
-    const isChecked = header.querySelector("#remote")
+    const isChecked = header?.querySelector("#remote")
     const remoteDisplay = document.querySelector(".remote-display")
-    const sectionHeight = document.querySelector("section").offsetHeight
+    const section = document.querySelector("section")
+    
+    if (!header || !isChecked || !remoteDisplay || !section) return // 필수 요소가 없으면 종료
+    
+    const sectionHeight = section.offsetHeight
 
     scroll.on("scroll", (args) => {
         if (args.scroll.y >= sectionHeight - 25 && args.scroll.y < sectionHeight * 2 - 50) header.classList.add("activate")
@@ -40,29 +94,65 @@ function controlDOM(scroll) {
 }
 
 function changeFilmData() {
-    const fixedFilm = document.querySelector(".fixed-film img")
+    const fixedFilmContainer = document.querySelector(".fixed-film")
+    const fixedIframe = fixedFilmContainer?.querySelector("iframe")
+    const textTitle = fixedFilmContainer?.querySelector(".text-01")
+    const readMoreLink = fixedFilmContainer?.querySelector(".read-more a")
+    
+    if (!fixedIframe || !fixedFilmContainer) return // iframe 요소가 없으면 종료
+    
     const filmList = document.querySelectorAll(".film-grid .film")
     let selected = null
+    let isTransitioning = false // 전환 중인지 확인
+    
+    // 첫 번째 썸네일을 기본 선택으로 설정
+    if (filmList.length > 0) {
+        const firstFilm = filmList[0]
+        selected = firstFilm
+        firstFilm.querySelector("img").classList.add("selected")
+    }
 
     filmList.forEach(film => {
       film.querySelector("img").addEventListener("click", (e) => {
         (scroll?.scrollTo || ((y) => window.scrollTo({ top: y, behavior: 'auto' })))(0);
 
-        if (fixedFilm.src === film.querySelector("img").src) return
+        const videoUrl = film.dataset.video
+        const title = film.dataset.title
+        const content = film.dataset.content
+        const workId = film.dataset.workId
 
-        if (selected) selected.classList.remove("selected")
-        selected = e.target
-        selected.classList.add("selected")
-        fixedFilm.parentNode.style.opacity = 0
+        if (fixedIframe.src === videoUrl || isTransitioning) return
+
+        if (selected) selected.querySelector("img").classList.remove("selected")
+        selected = film
+        selected.querySelector("img").classList.add("selected")
         
+        isTransitioning = true
+        
+        // 1단계: 페이드아웃 (0.5초)
+        fixedFilmContainer.style.transition = 'opacity 0.5s ease-in-out'
+        fixedFilmContainer.style.opacity = 0
+        
+        // 2단계: 페이드아웃 완료 후 동영상 변경
         setTimeout(() => {
-            fixedFilm.src = film.querySelector("img").src
-
-            if (fixedFilm.offsetHeight > fixedFilm.offsetWidth) fixedFilm.classList.add("short-horizontal")
-            else fixedFilm.classList.remove("short-horizontal")
-
-            fixedFilm.parentNode.style.opacity = 1
-        }, 250)
+            fixedIframe.src = videoUrl
+            
+            if (textTitle) textTitle.textContent = title
+            if (readMoreLink) {
+                readMoreLink.href = `/works/${workId}`
+                readMoreLink.dataset.workId = workId
+            }
+            
+            // 3단계: iframe 로드 대기 후 페이드인 (0.5초)
+            setTimeout(() => {
+                fixedFilmContainer.style.opacity = 1
+                
+                // 전환 완료
+                setTimeout(() => {
+                    isTransitioning = false
+                }, 500)
+            }, 200) // iframe 로드 대기
+        }, 500) // 페이드아웃 시간과 동일
       })
     })
 }

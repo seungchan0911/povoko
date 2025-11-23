@@ -4,6 +4,12 @@
     </IfModule>
 
     RewriteEngine On
+    
+    # PHP 업로드 크기 제한 증가
+    php_value upload_max_filesize 256M
+    php_value post_max_size 256M
+    php_value max_execution_time 300
+    php_value max_input_time 300
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .

@@ -14,29 +14,39 @@
         <main data-scroll-container>
             <section class="contact">
               <div class="logo">povoko studio</div>
-              <form action="" method="POST">
+              <form action="{{ route('contact') }}" method="POST">
                 @csrf
                 <div class="inputs">
                   <div class="input-group">
                     <div class="input-title">Name(*)</div>
-                    <input type="text">
+                    <input type="text" name="name" required>
                   </div>
                   <div class="input-group">
                     <div class="input-title">E-mail(*)</div>
-                    <input type="text">
+                    <input type="email" name="email" required>
                   </div>
                   <div class="input-group">
                     <div class="input-title">Message</div>
-                    <textarea name="" id="" cols="30" rows="10"></textarea>
+                    <textarea name="message" id="" cols="30" rows="10" required></textarea>
                   </div>
                   <button type="submit">Send</button>
                 </form>
               </div>
-              <div class="contact"></div>
+              <div class="contact-content">
+                <ul>
+                  <li><a href="https://www.instagram.com/povoko_studio" target="_blank">@@povoko_studio</a></li>
+                  <li><a href="#">+82 10 6326 9088</a></li>
+                  <li><a href="#">+33 7 67 05 93 11</a></li>
+                  <li><a href="mailto:contact@povokostudio.com">contact@povokostudio.com</a></li>
+                </ul>
+              </div>
             </section>
         </main>
         <footer></footer>
     </div>
 </body> 
 <script type="module" src="./js/main.js"></script>
+@if (session('success'))
+<script>alert(@json(session('success')))</script>
+@endif
 </html>
