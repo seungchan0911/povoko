@@ -19,6 +19,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Deploy 시 storage link 자동 생성
+        if (!file_exists(public_path('storage'))) {
+            \Artisan::call('storage:link');
+        }
     }
 }

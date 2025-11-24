@@ -1,5 +1,8 @@
 import LocomotiveScroll from 'https://esm.sh/locomotive-scroll'
 
+// 전역 변수로 scroll 선언
+let scroll = null;
+
 // 로딩 애니메이션 - 모든 페이지에 적용 (admin 제외)
 const currentPage = document.body.dataset.page
 if (currentPage !== 'admin') {
@@ -51,7 +54,7 @@ if (currentPage !== 'admin') {
 }
 
 window.addEventListener("load", () => {
-    const scroll = new LocomotiveScroll({
+    scroll = new LocomotiveScroll({
         el: document.querySelector('[data-scroll-container]'),
         smooth: true,
         lerp: 0.08,
@@ -115,14 +118,22 @@ function changeFilmData() {
 
     filmList.forEach(film => {
       film.querySelector("img").addEventListener("click", (e) => {
-        (scroll?.scrollTo || ((y) => window.scrollTo({ top: y, behavior: 'auto' })))(0);
+        // 스크롤 맨 위로
+        if (scroll && scroll.scrollTo) {
+            scroll.scrollTo(0)
+        } else {
+            window.scrollTo({ top: 0, behavior: 'auto' })
+        }
 
         const videoUrl = film.dataset.video
         const title = film.dataset.title
         const content = film.dataset.content
         const workId = film.dataset.workId
 
-        if (fixedIframe.src === videoUrl || isTransitioning) return
+        // 동일한 비디오면 무시
+        if (fixedIframe.src === videoUrl && !isTransitioning) return
+        // 이미 전환 중이면 무시
+        if (isTransitioning) return
 
         if (selected) selected.querySelector("img").classList.remove("selected")
         selected = film
