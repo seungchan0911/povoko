@@ -64,4 +64,18 @@ class WorkController extends Controller
         $work = Work::findOrFail($id);
         return view('work-detail', compact('work'));
     }
+    
+    public function delete($id) {
+        $work = Work::findOrFail($id);
+        
+        // 파일 삭제
+        if ($work->thumbnail && \Storage::disk('public')->exists($work->thumbnail)) {
+            \Storage::disk('public')->delete($work->thumbnail);
+        }
+        
+        // DB에서 삭제
+        $work->delete();
+        
+        return redirect()->route('works')->with('success', '삭제되었습니다.');
+    }
 }

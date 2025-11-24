@@ -19,6 +19,16 @@
         <main data-scroll-container>
             <section class="film-section">
                 <div class="fixed-film">
+                    @auth('admin')
+                    <div class="delete-button-container">
+                        <form action="{{ route('admin.works.delete', $work->id) }}" method="POST" onsubmit="return confirm('정말 삭제하시겠습니까?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="delete-btn">삭제</button>
+                        </form>
+                    </div>
+                    @endauth
+                    
                     <div class="film-wrap work-detail">
                         <iframe class="detail-iframe" src="{{ $work->video }}" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" allowfullscreen></iframe>
                     </div>
