@@ -20,11 +20,12 @@
             <section class="film-section">
                 <div class="fixed-film">
                     @auth('admin')
-                    <div class="delete-button-container">
-                        <form action="{{ route('admin.works.delete', $work->id) }}" method="POST" onsubmit="return confirm('정말 삭제하시겠습니까?');">
+                    <div class="admin-buttons-container">
+                        <a href="{{ route('admin.works.edit', $work->id) }}" class="edit-btn">edit</a>
+                        <form action="{{ route('admin.works.delete', $work->id) }}" method="POST" onsubmit="return confirm('Are you sure you wanna delete it?');" style="display: inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="delete-btn">삭제</button>
+                            <button type="submit" class="delete-btn">delete</button>
                         </form>
                     </div>
                     @endauth

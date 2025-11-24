@@ -405,9 +405,10 @@ section {
 
             transition: .25s opacity;
             
-            & .delete-button-container {
+            & .admin-buttons-container {
                 display: flex;
                 justify-content: center;
+                gap: 10px;
 
                 width: 100%;
                 
@@ -416,11 +417,26 @@ section {
                     cursor: pointer;
                 }
                 
+                & .edit-btn {
+                    all: unset;
+                    cursor: pointer;
+                    text-decoration: underline;
+                    font-family: "Roboto Condensed Regular";
+                    
+                    &:hover {
+                        color: #0056b3;
+                    }
+                }
+                
                 & .delete-btn {
                     all: unset;
                     cursor: pointer;
                     text-decoration: underline;
                     font-family: "Roboto Condensed Regular";
+                    
+                    &:hover {
+                        color: #a71d2a;
+                    }
                 }
             }
             

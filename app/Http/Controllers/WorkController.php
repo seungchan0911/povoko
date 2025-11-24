@@ -78,4 +78,45 @@ class WorkController extends Controller
         
         return redirect()->route('works')->with('success', '삭제되었습니다.');
     }
+    
+    public function edit($id) {
+        $work = Work::findOrFail($id);
+        return view('admin.works-edit', compact('work'));
+    }
+    
+    public function update(Request $request, $id) {
+        $work = Work::findOrFail($id);
+        
+        $request->validate([
+            'title' => 'required',
+            'content' => 'required',
+            'thumbnail' => 'nullable|file|mimes:jpeg,png,jpg,gif,webp,svg|max:20480',
+            'video' => 'nullable'
+        ]);
+        
+        $data = [
+            'title' => $request->title,
+            'content' => $request->content,
+            'video' => $request->video,
+        ];
+        
+        // 새 썸네일 업로드 처리
+        if ($request->hasFile('thumbnail')) {
+            $file = $request->file('thumbnail');
+            
+            if ($file->isValid()) {
+                // 기존 썸네일 삭제
+                if ($work->thumbnail && \Storage::disk('public')->exists($work->thumbnail)) {
+                    \Storage::disk('public')->delete($work->thumbnail);
+                }
+                
+                // 새 썸네일 저장
+                $data['thumbnail'] = $file->store('thumbnails', 'public');
+            }
+        }
+        
+        $work->update($data);
+        
+        return redirect()->route('works.show', $work->id)->with('success', '수정되었습니다.');
+    }
 }

@@ -22,6 +22,8 @@ Route::middleware(['admin.auth'])->group(function () {
     Route::get('admin/operation', [TextController::class, 'operationView'])->name('admin.operation');
     Route::get('admin/works', [WorkController::class, 'admin_view'])->name('admin.works');
     Route::post('admin/works', [WorkController::class, 'upload'])->name('admin.works');
+    Route::get('admin/works/{id}/edit', [WorkController::class, 'edit'])->name('admin.works.edit');
+    Route::put('admin/works/{id}', [WorkController::class, 'update'])->name('admin.works.update');
     Route::delete('admin/works/{id}', [WorkController::class, 'delete'])->name('admin.works.delete');
     Route::post('admin/operation', [TextController::class, 'operation'])->name('admin.operation');
     Route::get('admin/contact', [ContactController::class, 'view'])->name('admin.contact');
