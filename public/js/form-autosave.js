@@ -75,6 +75,11 @@ function loadFormData(form, storageKey) {
             const input = form.querySelector(`[name="${name}"]`)
             if (!input) return
             
+            // Edit 페이지에서 기존 값이 있으면 localStorage 무시
+            if (input.value && input.value.trim() !== '') {
+                return
+            }
+            
             if (input.type === 'checkbox') {
                 input.checked = data[name]
             } else if (input.type === 'radio') {

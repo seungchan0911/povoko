@@ -34,7 +34,7 @@
                     </div>
                 @endif
                 
-                <form action="{{ route('admin.works.update', $work->id) }}" method="POST" data-autosave="admin-works-edit">
+                <form action="{{ route('admin.works.update', $work->id) }}" method="POST" data-autosave="admin-works-edit-{{ $work->id }}">
                     @csrf
                     @method('PUT')
                     <div class="inputs">
