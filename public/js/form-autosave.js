@@ -68,6 +68,12 @@ function loadFormData(form, storageKey) {
     const savedData = localStorage.getItem(storageKey)
     if (!savedData) return
     
+    // Edit 페이지인지 확인 (data-is-edit 속성으로)
+    if (form.dataset.isEdit === 'true') {
+        // Edit 페이지에서는 localStorage를 로드하지 않음
+        return
+    }
+    
     try {
         const data = JSON.parse(savedData)
         
@@ -75,19 +81,17 @@ function loadFormData(form, storageKey) {
             const input = form.querySelector(`[name="${name}"]`)
             if (!input) return
             
-            // Edit 페이지에서 기존 값이 있으면 localStorage 무시
-            if (input.value && input.value.trim() !== '') {
-                return
-            }
-            
-            if (input.type === 'checkbox') {
-                input.checked = data[name]
-            } else if (input.type === 'radio') {
-                if (input.value === data[name]) {
-                    input.checked = true
+            // 빈 input에만 localStorage 값 적용
+            if (!input.value || input.value.trim() === '') {
+                if (input.type === 'checkbox') {
+                    input.checked = data[name]
+                } else if (input.type === 'radio') {
+                    if (input.value === data[name]) {
+                        input.checked = true
+                    }
+                } else {
+                    input.value = data[name]
                 }
-            } else {
-                input.value = data[name]
             }
         })
         
