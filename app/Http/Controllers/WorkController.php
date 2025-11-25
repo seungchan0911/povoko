@@ -8,43 +8,22 @@ use App\Models\Work;
 class WorkController extends Controller
 {
     public function upload(Request $request) {
-        if (!$request->hasFile('thumbnail')) {
-            return back()->with('error', 'No thumbnail file selected.');
-        }
-
         $request->validate([
             'title' => 'required',
             'content' => 'required',
-            'thumbnail' => 'required|file|mimes:jpeg,png,jpg,gif,webp,svg|max:20480',
+            'thumbnail' => 'required|url',
             'video' => 'nullable'
         ]);
 
-        $thumbnailPath = null;
-        $file = $request->file('thumbnail');
-        
-        if ($file->isValid()) {
-            try {
-                $thumbnailPath = $file->store('thumbnails', 'public');
-                
-                if (!$thumbnailPath) {
-                    return back()->with('error', 'Failed to save file to storage.');
-                }
-            } catch (\Exception $e) {
-                return back()->with('error', 'File upload failed: ' . $e->getMessage());
-            }
-        } else {
-            return back()->with('error', 'Invalid file uploaded. Error code: ' . $file->getError());
-        }
-
         try {
             Work::create([
-                'thumbnail' => $thumbnailPath,
+                'thumbnail' => $request->thumbnail,
                 'video' => $request->video,
                 'title' => $request->title,
                 'content' => $request->content,
             ]);
             
-            return back()->with('success', 'Work uploaded successfully! File saved at: ' . $thumbnailPath);
+            return back()->with('success', 'Work uploaded successfully!');
         } catch (\Exception $e) {
             return back()->with('error', 'Database error: ' . $e->getMessage());
         }
@@ -67,13 +46,6 @@ class WorkController extends Controller
     
     public function delete($id) {
         $work = Work::findOrFail($id);
-        
-        // 파일 삭제
-        if ($work->thumbnail && \Storage::disk('public')->exists($work->thumbnail)) {
-            \Storage::disk('public')->delete($work->thumbnail);
-        }
-        
-        // DB에서 삭제
         $work->delete();
         
         return redirect()->route('works')->with('success', '삭제되었습니다.');
@@ -90,32 +62,16 @@ class WorkController extends Controller
         $request->validate([
             'title' => 'required',
             'content' => 'required',
-            'thumbnail' => 'nullable|file|mimes:jpeg,png,jpg,gif,webp,svg|max:20480',
+            'thumbnail' => 'required|url',
             'video' => 'nullable'
         ]);
         
-        $data = [
+        $work->update([
             'title' => $request->title,
             'content' => $request->content,
+            'thumbnail' => $request->thumbnail,
             'video' => $request->video,
-        ];
-        
-        // 새 썸네일 업로드 처리
-        if ($request->hasFile('thumbnail')) {
-            $file = $request->file('thumbnail');
-            
-            if ($file->isValid()) {
-                // 기존 썸네일 삭제
-                if ($work->thumbnail && \Storage::disk('public')->exists($work->thumbnail)) {
-                    \Storage::disk('public')->delete($work->thumbnail);
-                }
-                
-                // 새 썸네일 저장
-                $data['thumbnail'] = $file->store('thumbnails', 'public');
-            }
-        }
-        
-        $work->update($data);
+        ]);
         
         return redirect()->route('works.show', $work->id)->with('success', '수정되었습니다.');
     }

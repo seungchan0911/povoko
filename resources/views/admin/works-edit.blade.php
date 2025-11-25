@@ -34,7 +34,7 @@
                     </div>
                 @endif
                 
-                <form action="{{ route('admin.works.update', $work->id) }}" method="POST" enctype="multipart/form-data" data-autosave="admin-works-edit">
+                <form action="{{ route('admin.works.update', $work->id) }}" method="POST" data-autosave="admin-works-edit">
                     @csrf
                     @method('PUT')
                     <div class="inputs">
@@ -51,12 +51,13 @@
                             <input type="text" name="video" value="{{ old('video', $work->video) }}">
                         </div>
                         <div class="input-group">
-                            <div class="input-title">thumbnail</div>
-                            <input type="file" name="thumbnail" accept="image/*">
+                            <div class="input-title">thumbnail url</div>
+                            <input type="url" name="thumbnail" placeholder="https://i.imgur.com/xxxxx.jpg" value="{{ old('thumbnail', $work->thumbnail) }}" required>
+                            <small style="color: #666; font-size: 12px;">Upload to Imgur/ImgBB and paste URL here</small>
                             @if($work->thumbnail)
                                 <div style="margin-top: 10px;">
-                                    <img src="{{ asset('storage/' . $work->thumbnail) }}" alt="Current thumbnail" style="max-width: 200px;">
-                                    <small style="display: block; margin-top: 5px;">Current: {{ basename($work->thumbnail) }}</small>
+                                    <img src="{{ $work->thumbnail }}" alt="Current thumbnail" style="max-width: 200px; display: block;">
+                                    <small style="display: block; margin-top: 5px; color: #999;">Current URL: {{ $work->thumbnail }}</small>
                                 </div>
                             @endif
                         </div>

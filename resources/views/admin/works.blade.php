@@ -38,7 +38,7 @@
                     </div>
                 @endif
                 
-                <form action="{{ route('admin.works') }}" method="POST" enctype="multipart/form-data" data-autosave="admin-works">
+                <form action="{{ route('admin.works') }}" method="POST" data-autosave="admin-works">
                     @csrf
                     <div class="inputs">
                         <div class="input-group">
@@ -54,8 +54,9 @@
                             <input type="text" name="video">
                         </div>
                         <div class="input-group">
-                            <div class="input-title">thumbnail</div>
-                            <input type="file" name="thumbnail">
+                            <div class="input-title">thumbnail url</div>
+                            <input type="url" name="thumbnail" placeholder="https://i.imgur.com/xxxxx.jpg" required>
+                            <small style="color: #666; font-size: 12px;">Upload to Imgur/ImgBB and paste URL here</small>
                         </div>
                         <button type="submit">upload</button>
                     </div>
