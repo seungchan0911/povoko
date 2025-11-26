@@ -18,13 +18,15 @@
         <x-layout.header />
         <main data-scroll-container>
             <section class="film-section">
-                <div class="fixed-film" data-scroll data-scroll-sticky data-scroll-target=".film-section">
-                    <div class="film-wrap">
-                        <iframe src="{{ $works->first()?->video ?? '' }}" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" allowfullscreen></iframe>
-                    </div>
-                    <div class="text-group">
-                        <div class="text-01">{{ $works->first()?->title ?? 'Brand Film for @brandname' }}</div>
-                        <div class="read-more"><a href="{{ $works->first() ? route('works.show', $works->first()->id) : '#' }}" data-work-id="{{ $works->first()?->id ?? '' }}">Read more...</a></div>
+                <div class="fixed-film-shuck" data-scroll data-scroll-sticky data-scroll-target=".film-section">
+                    <div class="fixed-film">
+                        <div class="film-wrap">
+                            <iframe src="{{ $works->first()?->video ?? '' }}" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" allowfullscreen></iframe>
+                        </div>
+                        <div class="text-group">
+                            <div class="text-01">{{ $works->first()?->title ?? 'Brand Film for @brandname' }}</div>
+                            <div class="read-more"><a href="{{ $works->first() ? route('works.show', $works->first()->id) : '#' }}" data-work-id="{{ $works->first()?->id ?? '' }}">Read more...</a></div>
+                        </div>
                     </div>
                 </div>
                 <div class="film-scroll">

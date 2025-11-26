@@ -405,6 +405,14 @@ section {
 
         padding: 25px;
         padding-top: 84px;
+
+        & .fixed-film-shuck {
+            display: flex;
+            align-items: center;
+
+            width: 100%;
+            height: calc(100vh - 109px);
+        }
         
         & .fixed-film {
             display: flex;
