@@ -348,7 +348,8 @@ section {
 
         display: flex;
         justify-content: center;
-        align-items: center;
+
+        height: 400vh;
 
         & .bg-parallax {
             position: absolute;
@@ -356,21 +357,25 @@ section {
             left: 0;
 
             width: 100%;
-            height: 100%;
+            height: 400vh;
             object-fit: cover;
             z-index: -100;
             
             & video {
                 position: absolute;
-                top: 50%;
-                left: 50%;
                 width: 100vw;
-                height: 56.25vw;
-                min-height: 100vh;
-                min-width: 177.78vh;
-                transform: translate(-50%, -50%);
+                height: 100vh;
+                transform: translate(0, -50%);
                 object-fit: cover;
             }
+        }
+
+        & .text-content-shuck {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            height: 100vh;
         }
         
         & .text-content {
@@ -378,6 +383,8 @@ section {
             flex-direction: column;
             align-items: center;
             gap: 25px;
+            
+            height: fit-content;
             
             font-family: "Roboto Condensed Regular";
             color: #fff;

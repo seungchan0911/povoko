@@ -17,10 +17,10 @@
     <div class="container">
         <x-layout.header />
         <main data-scroll-container>
-            <section class="section-01">
+            <section class="section-01" data-scroll-section>
                 <div class="logo" data-scroll data-scroll-speed="3">povoko studio</div>
             </section>
-            <section class="section-02">
+            <section class="section-02" data-scroll-section>
                 @php
                     $videos = [
                         $text->background_video_1 ? asset('storage/' . $text->background_video_1) : null,
@@ -34,25 +34,28 @@
                 
                 <div class="bg-parallax">
                     @if(isset($videos[0]))
-                        <video autoplay muted loop playsinline src="{{ $videos[0] }}"></video>
+                    <video autoplay muted loop playsinline src="{{ $videos[0] }}"></video>
                     @endif
                     @if(isset($videos[1]))
-                        <video autoplay muted loop playsinline src="{{ $videos[1] }}"></video>
+                    <video autoplay muted loop playsinline src="{{ $videos[1] }}"></video>
                     @endif
                     @if(isset($videos[2]))
-                        <video autoplay muted loop playsinline src="{{ $videos[2] }}"></video>
+                    <video autoplay muted loop playsinline src="{{ $videos[2] }}"></video>
                     @endif
                     @if(isset($videos[3]))
-                        <video autoplay muted loop playsinline src="{{ $videos[3] }}"></video>
+                        <div class="video"></div>    
+                    <video autoplay muted loop playsinline src="{{ $videos[3] }}"></video>
                     @endif
                 </div>
                 
-                <div class="text-content">
-                    <div class="text-01">{!! nl2br(e($text->text1)) !!}</div>
-                    <ul class="text-group">
-                        <li class="logo">povoko studio</li>
-                        <li>{!! nl2br(e($text->text2)) !!}</li>
-                    </ul>
+                <div class="text-content-shuck" data-scroll data-scroll-sticky data-scroll-target=".section-02">
+                    <div class="text-content">
+                        <div class="text-01">{!! nl2br(e($text->text1)) !!}</div>
+                        <ul class="text-group">
+                            <li class="logo">povoko studio</li>
+                            <li>{!! nl2br(e($text->text2)) !!}</li>
+                        </ul>
+                    </div>
                 </div>
             </section>
             {{-- <section class="section-03 film-section" data-scroll>
