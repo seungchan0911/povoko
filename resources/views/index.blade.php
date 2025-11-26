@@ -43,7 +43,6 @@
                     <video autoplay muted loop playsinline src="{{ $videos[2] }}"></video>
                     @endif
                     @if(isset($videos[3]))
-                        <div class="video"></div>    
                     <video autoplay muted loop playsinline src="{{ $videos[3] }}"></video>
                     @endif
                 </div>
