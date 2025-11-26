@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function saveFormData(form, storageKey) {
     const data = {}
-    const inputs = form.querySelectorAll('input:not([type="file"]):not([type="password"]), textarea, select')
+    const inputs = form.querySelectorAll('input:not([type="file"]):not([type="password"]):not([name="_token"]), textarea, select')
     
     inputs.forEach(input => {
         if (input.name) {

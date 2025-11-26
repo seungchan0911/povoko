@@ -31,6 +31,7 @@
                 
                 <form action="{{ route('admin.operation') }}" method="POST" enctype="multipart/form-data" data-autosave="admin-operation">
                     @csrf
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div class="inputs">
                         <div class="input-group">
                             <div class="input-title">text1</div>
