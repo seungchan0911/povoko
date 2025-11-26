@@ -100,7 +100,7 @@ function controlDOM(scroll) {
     const sectionHeight = section.offsetHeight
 
     scroll.on("scroll", (args) => {
-        if (args.scroll.y >= sectionHeight - 25 && args.scroll.y < sectionHeight * 2 - 50) header.classList.add("activate")
+        if (args.scroll.y >= sectionHeight - 25) header.classList.add("activate")
         else header.classList.remove("activate")
     })
 
