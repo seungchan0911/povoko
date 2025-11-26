@@ -54,14 +54,39 @@ if (currentPage !== 'admin') {
 }
 
 window.addEventListener("load", () => {
-    scroll = new LocomotiveScroll({
-        el: document.querySelector('[data-scroll-container]'),
-        smooth: true,
-        lerp: 0.08,
-    })
-    controlDOM(scroll)
-    if (document.body.dataset.page === "works") changeFilmData()
-    if (document.body.dataset.page === "home") initBackgroundVideos()
+    if (currentPage === "home") {
+        scroll = new LocomotiveScroll({
+            el: document.querySelector('[data-scroll-container]'),
+            smooth: true,
+            lerp: 0.08,
+            smartphone: {
+                smooth: true,
+                breakpoint: 0
+            },
+            tablet: {
+                smooth: true
+            }
+        });
+        controlDOM(scroll)
+        initBackgroundVideos()
+    } else {
+        scroll = new LocomotiveScroll({
+            el: document.querySelector('[data-scroll-container]'),
+            smooth: true,
+            lerp: 0.08,
+            tablet: {
+                smooth: true
+            }
+        });
+        controlDOM(scroll)
+        initBackgroundVideos()
+    }
+    
+    // works 페이지에서도 remote 작동하게
+    if (currentPage === "works") {
+        initRemoteForWorks()
+        changeFilmData()
+    }
 })
 
 function controlDOM(scroll) {
@@ -97,6 +122,23 @@ function controlDOM(scroll) {
     })
 }
 
+// works 페이지용 remote 컨트롤
+function initRemoteForWorks() {
+    const header = document.querySelector("header")
+    const isChecked = header?.querySelector("#remote")
+    const remoteDisplay = document.querySelector(".remote-display")
+    
+    if (!header || !isChecked || !remoteDisplay) return
+    
+    isChecked.addEventListener("change", () => {
+        if (isChecked.checked) {
+            remoteDisplay.classList.add("activate")
+        } else {
+            remoteDisplay.classList.remove("activate")
+        }
+    })
+}
+
 function changeFilmData() {
     const fixedFilmContainer = document.querySelector(".fixed-film")
     const fixedIframe = fixedFilmContainer?.querySelector("iframe")
@@ -118,11 +160,11 @@ function changeFilmData() {
 
     filmList.forEach(film => {
       film.querySelector("img").addEventListener("click", (e) => {
-        // 스크롤 맨 위로
+        // 스크롤 맨 위로 - Locomotive Scroll이 있으면 사용, 없으면 네이티브 스크롤
         if (scroll && scroll.scrollTo) {
             scroll.scrollTo(0)
         } else {
-            window.scrollTo({ top: 0, behavior: 'auto' })
+            window.scrollTo({ top: 0, behavior: 'smooth' })
         }
 
         const videoUrl = film.dataset.video

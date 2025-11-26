@@ -363,6 +363,7 @@ section {
             
             & video {
                 position: absolute;
+                left: 0;
                 width: 100vw;
                 height: 100vh;
                 transform: translate(0, -50%);
@@ -658,6 +659,18 @@ section {
 
 
 @media (max-width: 500px) {
+    header {
+        z-index: 10000 !important;
+        pointer-events: auto;
+        
+        & label {
+            pointer-events: auto;
+            cursor: pointer;
+            display: block;
+            padding: 10px;
+        }
+    }
+    
     .remote-display ul {
         flex-direction: column;
         text-align: center;
