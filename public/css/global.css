@@ -367,6 +367,22 @@ section {
                 height: 100vh;
                 transform: translate(0, -50%);
                 object-fit: cover;
+
+                &:nth-child(1) {
+                    top: 50vh;
+                }
+
+                &:nth-child(2) {
+                    top: 150vh;
+                }
+
+                &:nth-child(3) {
+                    top: 250vh;
+                }
+
+                &:nth-child(4) {
+                    top: 350vh;
+                }
             }
         }
 
