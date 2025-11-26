@@ -21,7 +21,7 @@
                 <div class="logo" data-scroll data-scroll-speed="3">povoko studio</div>
             </section>
             <section class="section-02" data-scroll-section>
-                @php
+                {{-- @php
                     $videos = [
                         $text->background_video_1 ? asset('storage/' . $text->background_video_1) : null,
                         $text->background_video_2 ? asset('storage/' . $text->background_video_2) : null,
@@ -30,21 +30,21 @@
                     ];
                     $videos = array_filter($videos);
                     $videos = array_values($videos);
-                @endphp
+                @endphp --}}
                 
                 <div class="bg-parallax">
-                    @if(isset($videos[0]))
-                    <video autoplay muted loop playsinline src="{{ $videos[0] }}"></video>
-                    @endif
-                    @if(isset($videos[1]))
-                    <video autoplay muted loop playsinline src="{{ $videos[1] }}"></video>
-                    @endif
-                    @if(isset($videos[2]))
-                    <video autoplay muted loop playsinline src="{{ $videos[2] }}"></video>
-                    @endif
-                    @if(isset($videos[3]))
-                    <video autoplay muted loop playsinline src="{{ $videos[3] }}"></video>
-                    @endif
+                    {{-- @if(isset($videos[0])) --}}
+                    <video autoplay muted loop playsinline src="{{ asset('video/a82_남자_초안 (720p).mp4') }}"></video>
+                    {{-- @endif --}}
+                    {{-- @if(isset($videos[1])) --}}
+                    <video autoplay muted loop playsinline src="{{ asset('video/4k_pottery_main_영상_초안_v1_240618_v1 (720p).mp4') }}"></video>
+                    {{-- @endif --}}
+                    {{-- @if(isset($videos[2])) --}}
+                    <video autoplay muted loop playsinline src="{{ asset('video/이스트로그x데상트_캠페인_수정안_250912_v1 (720p).mp4') }}"></video>
+                    {{-- @endif --}}
+                    {{-- @if(isset($videos[3])) --}}
+                    <video autoplay muted loop playsinline src="{{ asset('video/ooa_16-9_250403_v1 (720p).mp4') }}"></video>
+                    {{-- @endif --}}
                 </div>
                 
                 <div class="text-content-shuck" data-scroll data-scroll-sticky data-scroll-target=".section-02">
