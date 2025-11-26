@@ -2,9 +2,14 @@
 document.addEventListener('DOMContentLoaded', () => {
     const forms = document.querySelectorAll('form[data-autosave]')
     
+    console.log('[Form Autosave] Found forms:', forms.length)
+    
     forms.forEach(form => {
         const formId = form.dataset.autosave
         const storageKey = `form_${formId}`
+        const isEdit = form.dataset.isEdit === 'true'
+        
+        console.log('[Form Autosave] Init:', { formId, storageKey, isEdit })
         
         // 폼 데이터 로드
         loadFormData(form, storageKey)
@@ -36,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
         form.addEventListener('submit', (e) => {
             setTimeout(() => {
                 if (document.querySelector('.alert-success, .success-message')) {
+                    console.log('[Form Autosave] Clearing data:', storageKey)
                     clearFormData(storageKey)
                 }
             }, 100)
@@ -61,18 +67,21 @@ function saveFormData(form, storageKey) {
         }
     })
     
+    console.log('[Form Autosave] Saving:', storageKey, data)
     localStorage.setItem(storageKey, JSON.stringify(data))   
 }
 
 function loadFormData(form, storageKey) {
     const savedData = localStorage.getItem(storageKey)
+    
+    console.log('[Form Autosave] Loading:', storageKey, savedData)
+    
     if (!savedData) return
     
     // Edit 페이지인지 확인 (data-is-edit 속성으로)
-    if (form.dataset.isEdit === 'true') {
-        // Edit 페이지에서는 localStorage를 로드하지 않음
-        return
-    }
+    const isEdit = form.dataset.isEdit === 'true'
+    
+    console.log('[Form Autosave] Is edit page:', isEdit)
     
     try {
         const data = JSON.parse(savedData)
@@ -81,8 +90,13 @@ function loadFormData(form, storageKey) {
             const input = form.querySelector(`[name="${name}"]`)
             if (!input) return
             
-            // 빈 input에만 localStorage 값 적용
-            if (!input.value || input.value.trim() === '') {
+            // Edit 페이지: 빈 값일 때만 localStorage 적용
+            // New 페이지: 항상 localStorage 적용
+            const shouldLoad = isEdit ? (!input.value || input.value.trim() === '') : true
+            
+            console.log('[Form Autosave] Field:', name, { currentValue: input.value, savedValue: data[name], shouldLoad })
+            
+            if (shouldLoad) {
                 if (input.type === 'checkbox') {
                     input.checked = data[name]
                 } else if (input.type === 'radio') {
