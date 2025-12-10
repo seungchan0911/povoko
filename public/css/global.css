@@ -230,7 +230,7 @@ header {
 
 section {
     width: 100%;
-    height: 100vh;
+    height: 97.5vh;
 
     &.login {
         display: flex;
