@@ -11,17 +11,26 @@ class WorkController extends Controller
         $request->validate([
             'title' => 'required',
             'content' => 'required',
-            'thumbnail' => 'required|url',
+            'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
             'video' => 'nullable'
         ]);
 
         try {
-            Work::create([
-                'thumbnail' => $request->thumbnail,
+            $data = [
                 'video' => $request->video,
                 'title' => $request->title,
                 'content' => $request->content,
-            ]);
+            ];
+            
+            // 썸네일 파일 업로드 (S3에 저장)
+            if ($request->hasFile('thumbnail')) {
+                $file = $request->file('thumbnail');
+                if ($file->isValid()) {
+                    $data['thumbnail'] = $file->store('images/thumbnails', 's3');
+                }
+            }
+            
+            Work::create($data);
             
             return back()->with('success', 'Work uploaded successfully!');
         } catch (\Exception $e) {
@@ -46,6 +55,12 @@ class WorkController extends Controller
     
     public function delete($id) {
         $work = Work::findOrFail($id);
+        
+        // S3에 저장된 썸네일 삭제 (하지만 Pinterest URL은 실패하고 넘어감)
+        if ($work->thumbnail && \Storage::exists($work->thumbnail)) {
+            \Storage::delete($work->thumbnail);
+        }
+        
         $work->delete();
         
         return redirect()->route('works')->with('success', '삭제되었습니다.');
@@ -62,16 +77,33 @@ class WorkController extends Controller
         $request->validate([
             'title' => 'required',
             'content' => 'required',
-            'thumbnail' => 'required|url',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
             'video' => 'nullable'
         ]);
         
-        $work->update([
+        $data = [
             'title' => $request->title,
             'content' => $request->content,
-            'thumbnail' => $request->thumbnail,
             'video' => $request->video,
-        ]);
+        ];
+        
+        // 썸네일 파일 업로드 (S3에 저장)
+        if ($request->hasFile('thumbnail')) {
+            $file = $request->file('thumbnail');
+            if ($file->isValid()) {
+                // 기존 파일 삭제 (하지만 Pinterest URL은 실패하고 넘어감)
+                if ($work->thumbnail && \Storage::exists($work->thumbnail)) {
+                    \Storage::delete($work->thumbnail);
+                }
+                
+                $data['thumbnail'] = $file->store('images/thumbnails', 's3');
+            }
+        } else {
+            // 파일 업로드 안 하면 기존 값 유지 (Pinterest URL 그대로)
+            $data['thumbnail'] = $work->thumbnail;
+        }
+        
+        $work->update($data);
         
         return redirect()->route('works.show', $work->id)->with('success', '수정되었습니다.');
     }

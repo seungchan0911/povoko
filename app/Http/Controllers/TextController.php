@@ -70,12 +70,12 @@ class TextController extends Controller
                 
                 if ($file->isValid()) {
                     // 기존 파일 삭제
-                    if ($text->$fieldName && \Storage::disk('public')->exists($text->$fieldName)) {
-                        \Storage::disk('public')->delete($text->$fieldName);
+                    if ($text->$fieldName && \Storage::exists($text->$fieldName)) {
+                        \Storage::delete($text->$fieldName);
                     }
                     
-                    // 새 파일 저장
-                    $data[$fieldName] = $file->store('videos', 'public');
+                    // 새 파일 저장 (S3에 저장)
+                    $data[$fieldName] = $file->store('videos', 's3');
                 } else {
                     // 파일이 유효하지 않으면 기존 값 유지
                     $data[$fieldName] = $text->$fieldName;

@@ -33,7 +33,7 @@
                     <div class="film-grid">
                         @foreach ($works as $work)
                         <div class="film" data-video="{{ $work->video }}" data-title="{{ $work->title }}" data-content="{{ $work->content }}" data-work-id="{{ $work->id }}">
-                            <img src="{{ $work->thumbnail }}" alt="{{ $work->title }}">
+                            <img src="{{ str_starts_with($work->thumbnail, 'http') ? $work->thumbnail : \Storage::url($work->thumbnail) }}" alt="{{ $work->title }}">
                         </div>
                         @endforeach
                     </div>
