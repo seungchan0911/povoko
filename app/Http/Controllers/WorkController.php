@@ -16,13 +16,6 @@ class WorkController extends Controller
         ]);
 
         try {
-            // 디버깅: 무슨 데이터가 들어오는지 확인
-            \Log::info('Upload Request Data:', [
-                'has_file' => $request->hasFile('thumbnail'),
-                'all_files' => $request->allFiles(),
-                'all_input' => $request->all(),
-            ]);
-            
             $data = [
                 'video' => $request->video,
                 'title' => $request->title,
@@ -33,24 +26,14 @@ class WorkController extends Controller
             if ($request->hasFile('thumbnail')) {
                 $file = $request->file('thumbnail');
                 if ($file->isValid()) {
-                    $path = $file->store('images/thumbnails', 's3');
-                    \Log::info('File uploaded to S3:', ['path' => $path]);
-                    $data['thumbnail'] = $path;
-                } else {
-                    \Log::error('File is not valid');
-                    return back()->with('error', '파일 업로드 실패: 유효하지 않은 파일');
+                    $data['thumbnail'] = $file->store('images/thumbnails', 's3');
                 }
-            } else {
-                \Log::error('No file in request');
-                return back()->with('error', '썸네일 이미지를 선택해주세요.');
             }
             
-            \Log::info('Creating work with data:', $data);
             Work::create($data);
             
             return back()->with('success', 'Work uploaded successfully!');
         } catch (\Exception $e) {
-            \Log::error('Upload exception:', ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             return back()->with('error', 'Database error: ' . $e->getMessage());
         }
     }
