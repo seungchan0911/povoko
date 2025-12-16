@@ -27,7 +27,11 @@ class WorkController extends Controller
                 $file = $request->file('thumbnail');
                 if ($file->isValid()) {
                     $data['thumbnail'] = $file->store('images/thumbnails', 's3');
+                } else {
+                    return back()->with('error', '파일 업로드 실패: 유효하지 않은 파일');
                 }
+            } else {
+                return back()->with('error', '썸네일 이미지를 선택해주세요.');
             }
             
             Work::create($data);
